@@ -41,8 +41,13 @@ class AppleMapViewController: UIViewController {
         }
     }
     
+    private var searchResults: [MKLocalSearchCompletion] = [] {
+        didSet {
+            updateMapWithCompletionResults()
+        }
+    }
+    
     private lazy var locationHandler = LocationHandler(delegate: self)
-    private var searchResults: [MKLocalSearchCompletion] = []
     private var searchCompleter: MKLocalSearchCompleter?
     private var dataSource: [MKAnnotation] = []
     
@@ -58,6 +63,18 @@ class AppleMapViewController: UIViewController {
     }
     
     // MARK: - Map Methods
+    
+    private func updateMapWithCompletionResults() {
+        
+        guard !searchResults.isEmpty else { return }
+        viewModel.loadAnnotations(with: searchResults) { annotations in
+            guard !annotations.isEmpty else { return }
+            self.dataSource.removeAll()
+            self.dataSource.append(contentsOf: annotations)
+            self.mapView.addAnnotations(self.dataSource)
+            self.updateRegionWithDataSource()
+        }
+    }
     
     private func loadCoffeeShopsInMap(with query: String) {
         
@@ -92,7 +109,7 @@ class AppleMapViewController: UIViewController {
         searchRequest.naturalLanguageQuery = query
         searchRequest.region = mapView.region
         
-        viewModel.getAnnotationOfSearch(with: searchRequest) { annotations in
+        viewModel.loadAnnotation(with: searchRequest) { annotations in
             guard let annotations = annotations,
                   !annotations.isEmpty else { return }
             self.dataSource.removeAll()
@@ -222,10 +239,7 @@ extension AppleMapViewController: MKLocalSearchCompleterDelegate {
     }
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        
-        print("completer: ", completer)
         searchResults = completer.results
-        print("searchResults: ", searchResults)
     }
 }
 

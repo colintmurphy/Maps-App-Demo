@@ -53,6 +53,13 @@ class GoogleMapViewController: UIViewController {
         setup()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if traitCollection.userInterfaceStyle == .dark {
+            setDarkModeMap()
+        }
+    }
+    
     // MARK: - Map Methods
     
     private func setMapView(with location: CLLocation) { }
@@ -87,6 +94,15 @@ class GoogleMapViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+    }
+    
+    private func setDarkModeMap() {
+        do {
+            guard let styleURL = Bundle.main.url(forResource: "GoogleMapDarkStyle", withExtension: "json") else { return }
+            googleMap.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+        } catch {
+            print(error)
+        }
     }
     
     @objc private func dismissKeyboard() {
@@ -133,8 +149,6 @@ extension GoogleMapViewController: GMSMapViewDelegate { }
 // MARK: - UISearchBarDelegate
 
 extension GoogleMapViewController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) { }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         

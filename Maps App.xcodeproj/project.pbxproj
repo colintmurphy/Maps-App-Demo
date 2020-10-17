@@ -26,6 +26,7 @@
 		218E298C253B44C300723789 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E298B253B44C300723789 /* CustomError.swift */; };
 		218E2997253B63A200723789 /* GoogleMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E2996253B63A200723789 /* GoogleMapViewModel.swift */; };
 		218E299C253B6AA700723789 /* CustomMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E299B253B6AA700723789 /* CustomMarker.swift */; };
+		219C1531253BA092008FF963 /* GoogleMapDarkStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = 219C1530253BA092008FF963 /* GoogleMapDarkStyle.json */; };
 		99D5066FB4E591862FA3654D /* Pods_Maps_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9D1431CF8ACE09D86894A83 /* Pods_Maps_App.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		218E298B253B44C300723789 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		218E2996253B63A200723789 /* GoogleMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapViewModel.swift; sourceTree = "<group>"; };
 		218E299B253B6AA700723789 /* CustomMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarker.swift; sourceTree = "<group>"; };
+		219C1530253BA092008FF963 /* GoogleMapDarkStyle.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GoogleMapDarkStyle.json; sourceTree = "<group>"; };
 		31B73057F868C4E1FD68CD04 /* Pods-Maps App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maps App.debug.xcconfig"; path = "Target Support Files/Pods-Maps App/Pods-Maps App.debug.xcconfig"; sourceTree = "<group>"; };
 		B50BACEFB356C7C42028E93B /* Pods-Maps App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maps App.release.xcconfig"; path = "Target Support Files/Pods-Maps App/Pods-Maps App.release.xcconfig"; sourceTree = "<group>"; };
 		B9D1431CF8ACE09D86894A83 /* Pods_Maps_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Maps_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				218E299B253B6AA700723789 /* CustomMarker.swift */,
+				219C1530253BA092008FF963 /* GoogleMapDarkStyle.json */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219C1531253BA092008FF963 /* GoogleMapDarkStyle.json in Resources */,
 				218E293F253A759700723789 /* LaunchScreen.storyboard in Resources */,
 				218E2988253B3F5800723789 /* AppleSelectedAnnotationView.xib in Resources */,
 				218E293C253A759700723789 /* Assets.xcassets in Resources */,

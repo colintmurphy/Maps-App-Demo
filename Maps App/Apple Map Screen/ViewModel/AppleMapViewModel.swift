@@ -29,9 +29,29 @@ class AppleMapViewModel {
     
     weak var delegate: AppleViewModelProtocol?
     
-    // MARK: - Public Methods
+    // MARK: - Get Annotations
     
-    func getAnnotationOfSearch(with searchRequest: MKLocalSearch.Request, completion: @escaping ([CustomAnnotation]?) -> Void) {
+    func loadAnnotations(with searchCompletionResults: [MKLocalSearchCompletion], completion: @escaping ([CustomAnnotation]) -> Void) {
+        
+        let group = DispatchGroup()
+        var annotations: [CustomAnnotation] = []
+        
+        for result in searchCompletionResults {
+            group.enter()
+            geocoding(query: result.subtitle) { location, _ in
+                if let location = location {
+                    annotations.append(CustomAnnotation(coordinate: location.coordinate, title: result.title, subtitle: result.subtitle))
+                }
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            completion(annotations)
+        }
+    }
+    
+    func loadAnnotation(with searchRequest: MKLocalSearch.Request, completion: @escaping ([CustomAnnotation]?) -> Void) {
         
         var annotations: [CustomAnnotation] = []
         let search = MKLocalSearch(request: searchRequest)
@@ -48,6 +68,30 @@ class AppleMapViewModel {
             completion(annotations)
         }
     }
+    
+    func loadAnnotations(with query: String, completion: @escaping ([CustomAnnotation]?, CustomError?) -> Void) {
+        
+        delegate?.showActivity()
+        geocoding(query: query) { location, error in
+            if let error = error {
+                self.delegate?.hideActivity()
+                self.delegate?.failed(with: error)
+            } else if let location = location {
+                
+                self.fetchData(with: location) { annotations, error in
+                    if let error = error {
+                        self.delegate?.hideActivity()
+                        self.delegate?.failed(with: error)
+                    } else if let annotations = annotations {
+                        self.delegate?.hideActivity()
+                        completion(annotations, nil)
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: - Move Camera
     
     func moveCameraTo(annotation: MKAnnotation) -> MKCoordinateRegion? {
         
@@ -84,28 +128,6 @@ class AppleMapViewModel {
         region.span.latitudeDelta = abs(minLatitude - maxLatitude)
         region.span.longitudeDelta = abs(minLongitude - maxLongitude)
         return region
-    }
-    
-    func loadAnnotations(with query: String, completion: @escaping ([CustomAnnotation]?, CustomError?) -> Void) {
-        
-        delegate?.showActivity()
-        geocoding(query: query) { location, error in
-            if let error = error {
-                self.delegate?.hideActivity()
-                self.delegate?.failed(with: error)
-            } else if let location = location {
-                
-                self.fetchData(with: location) { annotations, error in
-                    if let error = error {
-                        self.delegate?.hideActivity()
-                        self.delegate?.failed(with: error)
-                    } else if let annotations = annotations {
-                        self.delegate?.hideActivity()
-                        completion(annotations, nil)
-                    }
-                }
-            }
-        }
     }
     
     // MARK: - Private Methods
