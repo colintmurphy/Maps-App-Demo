@@ -1,24 +1,170 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7uO-y6-cv4">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Coffee Shops-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="AppleMapViewController" customModule="Maps_App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" placeholder="Please enter a location" translatesAutoresizingMaskIntoConstraints="NO" id="z4i-f0-dC2">
+                                <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <color key="tintColor" red="0.7725490196" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="WRM-we-rFn">
+                                <rect key="frame" x="0.0" y="144" width="414" height="669"/>
+                                <color key="tintColor" red="0.49146646259999999" green="0.33319979910000003" blue="0.99987798930000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </mapView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="JVE-Gs-RwI">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="tintColor" red="0.7725490196" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="JVE-Gs-RwI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="5iH-bU-bBz"/>
+                            <constraint firstItem="WRM-we-rFn" firstAttribute="top" secondItem="z4i-f0-dC2" secondAttribute="bottom" id="902-wC-Pdo"/>
+                            <constraint firstItem="z4i-f0-dC2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Jlz-sV-hEB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="WRM-we-rFn" secondAttribute="bottom" id="Ra4-8L-ofn"/>
+                            <constraint firstItem="z4i-f0-dC2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="UTM-Ek-Mvv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="z4i-f0-dC2" secondAttribute="trailing" id="Vzp-Bv-as4"/>
+                            <constraint firstItem="JVE-Gs-RwI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YVk-gB-T4I"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WRM-we-rFn" secondAttribute="trailing" id="kgE-Wi-ATg"/>
+                            <constraint firstItem="WRM-we-rFn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ym1-pZ-RVY"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Coffee Shops" id="Gct-8n-DY2"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="JVE-Gs-RwI" id="Lqy-VD-yae"/>
+                        <outlet property="mapView" destination="WRM-we-rFn" id="Nx8-Kd-POC"/>
+                        <outlet property="searchBar" destination="z4i-f0-dC2" id="w3h-t0-W8m"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1655.072463768116" y="94.419642857142847"/>
+        </scene>
+        <!--Coffee Shops-->
+        <scene sceneID="pTX-da-LsB">
+            <objects>
+                <viewController id="vpa-9j-b8p" customClass="GoogleMapViewController" customModule="Maps_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="23g-g3-V1o">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" placeholder="Please enter a location" translatesAutoresizingMaskIntoConstraints="NO" id="YU0-LY-1Ak">
+                                <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <color key="tintColor" red="0.7725490196" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BeZ-6u-2Dq">
+                                <rect key="frame" x="0.0" y="144" width="414" height="669"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="w6S-mc-bfz"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="BeZ-6u-2Dq" firstAttribute="leading" secondItem="w6S-mc-bfz" secondAttribute="leading" id="Brs-13-Qbm"/>
+                            <constraint firstItem="BeZ-6u-2Dq" firstAttribute="top" secondItem="YU0-LY-1Ak" secondAttribute="bottom" id="SHB-MN-ez3"/>
+                            <constraint firstItem="YU0-LY-1Ak" firstAttribute="top" secondItem="w6S-mc-bfz" secondAttribute="top" id="Ule-H2-fto"/>
+                            <constraint firstItem="w6S-mc-bfz" firstAttribute="bottom" secondItem="BeZ-6u-2Dq" secondAttribute="bottom" id="eMU-c2-H3C"/>
+                            <constraint firstItem="YU0-LY-1Ak" firstAttribute="trailing" secondItem="w6S-mc-bfz" secondAttribute="trailing" id="f0Y-PZ-98O"/>
+                            <constraint firstItem="w6S-mc-bfz" firstAttribute="trailing" secondItem="BeZ-6u-2Dq" secondAttribute="trailing" id="mAe-hV-04h"/>
+                            <constraint firstItem="YU0-LY-1Ak" firstAttribute="leading" secondItem="w6S-mc-bfz" secondAttribute="leading" id="oip-Xa-7kQ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Coffee Shops" id="KLz-6Y-NYl"/>
+                    <connections>
+                        <outlet property="mapView" destination="BeZ-6u-2Dq" id="ubS-FS-VAW"/>
+                        <outlet property="searchBar" destination="YU0-LY-1Ak" id="Ihl-7z-8Wr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TKT-xk-zcv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1654" y="933"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="lFd-tN-lX2">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="7uO-y6-cv4" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b5m-9d-jcR">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.7725490196" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" red="0.49146646259999999" green="0.33319979910000003" blue="0.99987798930000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Is7-bR-wm9" kind="relationship" relationship="viewControllers" id="OaG-oi-Mmy"/>
+                        <segue destination="R25-Fb-Gqw" kind="relationship" relationship="viewControllers" id="N1z-8J-fXZ"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6ka-MS-ada" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-339" y="609"/>
+        </scene>
+        <!--Apple-->
+        <scene sceneID="YKf-Qi-B1j">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Is7-bR-wm9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Apple" image="mappin" catalog="system" id="EQi-IY-g8e"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1dv-oZ-7DZ">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Ycb-Lg-K5F"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="if4-qm-e4F" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="744.92753623188412" y="94.419642857142847"/>
+        </scene>
+        <!--Google-->
+        <scene sceneID="buX-Wq-KSW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R25-Fb-Gqw" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Google" image="mappin.and.ellipse" catalog="system" id="MWa-92-Yaf"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xBu-0P-C5r">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="vpa-9j-b8p" kind="relationship" relationship="rootViewController" id="rse-Km-2cA"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0yT-sV-zOB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="745" y="933"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="mappin" catalog="system" width="105" height="128"/>
+        <image name="mappin.and.ellipse" catalog="system" width="118" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
