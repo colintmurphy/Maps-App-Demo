@@ -18,7 +18,6 @@ class CustomMarker: GMSMarker {
         position = coordinate
         icon = UIImage(named: "coffee72")
         title = place.name
-        //snippet = "Coffee Shop"
         map = nil
     }
 }

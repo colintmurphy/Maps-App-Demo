@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Coffee Shops-->
+        <!--Apple Search-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="AppleMapViewController" customModule="Maps_App" customModuleProvider="target" sceneMemberID="viewController">
@@ -17,39 +17,54 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Please enter a location" translatesAutoresizingMaskIntoConstraints="NO" id="z4i-f0-dC2">
+                            <searchBar contentMode="redraw" placeholder="Where do you want to find a cup of joe?" translatesAutoresizingMaskIntoConstraints="NO" id="z4i-f0-dC2">
                                 <rect key="frame" x="0.0" y="88" width="414" height="56"/>
                                 <color key="tintColor" red="0.7725490196" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="WRM-we-rFn">
-                                <rect key="frame" x="0.0" y="144" width="414" height="669"/>
+                                <rect key="frame" x="0.0" y="199" width="414" height="614"/>
                                 <color key="tintColor" red="0.49146646259999999" green="0.33319979910000003" blue="0.99987798930000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </mapView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="JVE-Gs-RwI">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
                             </activityIndicatorView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QSH-po-kRJ">
+                                <rect key="frame" x="16" y="156" width="382" height="32"/>
+                                <segments>
+                                    <segment title="Coffee Shops"/>
+                                    <segment title="Locations"/>
+                                    <segment title="General"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeSearchType:" destination="BYZ-38-t0r" eventType="valueChanged" id="SsT-CC-o1g"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" red="0.7725490196" green="0.71372549019999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="JVE-Gs-RwI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="5iH-bU-bBz"/>
-                            <constraint firstItem="WRM-we-rFn" firstAttribute="top" secondItem="z4i-f0-dC2" secondAttribute="bottom" id="902-wC-Pdo"/>
+                            <constraint firstItem="QSH-po-kRJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="BtL-tn-QuC"/>
+                            <constraint firstItem="WRM-we-rFn" firstAttribute="top" secondItem="QSH-po-kRJ" secondAttribute="bottom" constant="12" id="Hda-su-9tf"/>
                             <constraint firstItem="z4i-f0-dC2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Jlz-sV-hEB"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="WRM-we-rFn" secondAttribute="bottom" id="Ra4-8L-ofn"/>
                             <constraint firstItem="z4i-f0-dC2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="UTM-Ek-Mvv"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="z4i-f0-dC2" secondAttribute="trailing" id="Vzp-Bv-as4"/>
                             <constraint firstItem="JVE-Gs-RwI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YVk-gB-T4I"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QSH-po-kRJ" secondAttribute="trailing" constant="16" id="bzb-iS-qDV"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WRM-we-rFn" secondAttribute="trailing" id="kgE-Wi-ATg"/>
+                            <constraint firstItem="QSH-po-kRJ" firstAttribute="top" secondItem="z4i-f0-dC2" secondAttribute="bottom" constant="12" id="nYa-8o-B5u"/>
                             <constraint firstItem="WRM-we-rFn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ym1-pZ-RVY"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Coffee Shops" id="Gct-8n-DY2"/>
+                    <navigationItem key="navigationItem" title="Apple Search" id="Gct-8n-DY2"/>
                     <connections>
                         <outlet property="activityIndicator" destination="JVE-Gs-RwI" id="Lqy-VD-yae"/>
                         <outlet property="mapView" destination="WRM-we-rFn" id="Nx8-Kd-POC"/>
                         <outlet property="searchBar" destination="z4i-f0-dC2" id="w3h-t0-W8m"/>
+                        <outlet property="segmentedControl" destination="QSH-po-kRJ" id="Wlp-xA-BUp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

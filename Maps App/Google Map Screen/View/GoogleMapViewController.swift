@@ -60,9 +60,7 @@ class GoogleMapViewController: UIViewController {
         }
     }
     
-    // MARK: - Map Methods
-    
-    private func setMapView(with location: CLLocation) { }
+    // MARK: - Markers
     
     private func loadCoffeeShopsInMap(with query: String) {
         
@@ -81,13 +79,17 @@ class GoogleMapViewController: UIViewController {
         }
     }
     
+    // MARK: - Set Map Region
+    
+    private func setMapView(with location: CLLocation) { }
+    
     private func updateRegionWithDataSource() { }
     
-    // MARK: - Setup
+    // MARK: - UI/UX
     
     private func setup() {
         
-        googleMap = GMSMapView(frame: self.mapView.frame)
+        googleMap = GMSMapView(frame: mapView.frame)
         view.addSubview(googleMap)
         locationHandler.getUserLocation()
         
@@ -114,8 +116,6 @@ class GoogleMapViewController: UIViewController {
 
 extension GoogleMapViewController: GoogleViewModelProtocol {
     
-    func didFinishLoad() { }
-    
     func showActivity() {
         activityIndicator.startAnimating()
     }
@@ -124,6 +124,7 @@ extension GoogleMapViewController: GoogleViewModelProtocol {
         activityIndicator.stopAnimating()
     }
     
+    func didFinishLoad() { }
     func failed(with error: CustomError) { }
 }
 
@@ -132,7 +133,6 @@ extension GoogleMapViewController: GoogleViewModelProtocol {
 extension GoogleMapViewController: LocationHandlerDelegate {
     
     func received(location: CLLocation) {
-        
         let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 0)
         googleMap.camera = camera
     }

@@ -24,7 +24,7 @@ protocol GoogleMapViewModelProtocol {
     func resetDataSource()
 }
 
-class GoogleMapViewModel {
+class GoogleMapViewModel: GeocoderHandler {
     
     // MARK: - Properties
     
@@ -86,18 +86,6 @@ class GoogleMapViewModel {
     }
     
     // MARK: - Private Methods
-    
-    private func geocoding(query: String, completion: @escaping (CLLocation?, CustomError?) -> Void) {
-        
-        CLGeocoder().geocodeAddressString(query) { placemarks, _ in
-            if let placemarks = placemarks,
-               let location = placemarks.first?.location {
-                completion(location, nil)
-            } else {
-                completion(nil, CustomError.noLocationFound)
-            }
-        }
-    }
     
     private func fetchData(with location: CLLocation, completion: @escaping ([CustomMarker]?, CustomError?) -> Void) {
         

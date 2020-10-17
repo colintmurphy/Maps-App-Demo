@@ -33,6 +33,8 @@ class AppleMapViewController: UIViewController {
         }
     }
     
+    @IBOutlet private weak var segmentedControl: UISegmentedControl!
+    
     // MARK: - Properties
     
     private var viewModel = AppleMapViewModel() {
@@ -48,8 +50,9 @@ class AppleMapViewController: UIViewController {
     }
     
     private lazy var locationHandler = LocationHandler(delegate: self)
-    private var searchCompleter: MKLocalSearchCompleter?
     private var dataSource: [MKAnnotation] = []
+    private var searchType = SearchType.coffee
+    private var searchCompleter: MKLocalSearchCompleter?
     
     // MARK: - View Life Cycles
     
@@ -62,16 +65,22 @@ class AppleMapViewController: UIViewController {
         locationHandler.getUserLocation()
     }
     
-    // MARK: - Map Methods
+    // MARK: - IBActions
+    
+    @IBAction private func changeSearchType(_ sender: Any) {
+        guard let type = SearchType(rawValue: segmentedControl.selectedSegmentIndex) else { return }
+        searchType = type
+        updateSearchBarPlaceholder()
+    }
+    
+    // MARK: - Load Annotations
     
     private func updateMapWithCompletionResults() {
         
         guard !searchResults.isEmpty else { return }
         viewModel.loadAnnotations(with: searchResults) { annotations in
             guard !annotations.isEmpty else { return }
-            self.dataSource.removeAll()
-            self.dataSource.append(contentsOf: annotations)
-            self.mapView.addAnnotations(self.dataSource)
+            self.updateViewWithDataSource(annotations: annotations)
             self.updateRegionWithDataSource()
         }
     }
@@ -80,9 +89,7 @@ class AppleMapViewController: UIViewController {
         
         viewModel.loadAnnotations(with: query) { annotations, error in
             if let annotations = annotations {
-                self.dataSource.removeAll()
-                self.dataSource.append(contentsOf: annotations)
-                self.mapView.addAnnotations(self.dataSource)
+                self.updateViewWithDataSource(annotations: annotations)
                 self.updateRegionWithDataSource()
             } else if let error = error {
                 print(error)
@@ -90,18 +97,7 @@ class AppleMapViewController: UIViewController {
         }
     }
     
-    private func updateRegionWithDataSource() {
-        guard let region = viewModel.moveCameraToShow(annotations: dataSource) else { return }
-        mapView.setRegion(region, animated: true)
-    }
-    
-    private func updateRegionForSearchRequest() {
-        guard !dataSource.isEmpty,
-            let region = viewModel.moveCameraTo(annotation: dataSource[0]) else { return }
-        mapView.setRegion(region, animated: true)
-    }
-    
-    // MARK: - MKLocalSearch
+    // MARK: - MKLocalSearches
     
     private func localSearch(with query: String) {
         
@@ -112,9 +108,7 @@ class AppleMapViewController: UIViewController {
         viewModel.loadAnnotation(with: searchRequest) { annotations in
             guard let annotations = annotations,
                   !annotations.isEmpty else { return }
-            self.dataSource.removeAll()
-            self.dataSource.append(contentsOf: annotations)
-            self.mapView.addAnnotations(self.dataSource)
+            self.updateViewWithDataSource(annotations: annotations)
             self.updateRegionForSearchRequest()
         }
     }
@@ -127,7 +121,26 @@ class AppleMapViewController: UIViewController {
         searchCompleter?.queryFragment = query
     }
     
-    // MARK: - Setup
+    private func updateViewWithDataSource(annotations: [CustomAnnotation]) {
+        dataSource.removeAll()
+        dataSource.append(contentsOf: annotations)
+        mapView.addAnnotations(dataSource)
+    }
+    
+    // MARK: - Region Updates
+    
+    private func updateRegionWithDataSource() {
+        guard let region = viewModel.moveCameraToShow(annotations: dataSource) else { return }
+        mapView.setRegion(region, animated: true)
+    }
+    
+    private func updateRegionForSearchRequest() {
+        guard !dataSource.isEmpty,
+            let region = viewModel.moveCameraTo(annotation: dataSource[0]) else { return }
+        mapView.setRegion(region, animated: true)
+    }
+    
+    // MARK: - UI/UX
     
     private func setup() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -138,13 +151,25 @@ class AppleMapViewController: UIViewController {
     @objc private func dismissKeyboard() {
         searchBar.resignFirstResponder()
     }
+    
+    private func updateSearchBarPlaceholder() {
+        
+        switch searchType {
+        case .coffee:
+            searchBar.placeholder = "Where do you want to find a cup of joe?"
+        
+        case .location:
+            searchBar.placeholder = "What location are you looking for"
+        
+        case .general:
+            searchBar.placeholder = "Enter a search"
+        }
+    }
 }
 
 // MARK: - AppleMapViewModelDelegate
 
 extension AppleMapViewController: AppleViewModelProtocol {
-    
-    func didFinishLoad() { }
     
     func showActivity() {
         activityIndicator.startAnimating()
@@ -154,6 +179,7 @@ extension AppleMapViewController: AppleViewModelProtocol {
         activityIndicator.stopAnimating()
     }
     
+    func didFinishLoad() { }
     func failed(with error: CustomError) { }
 }
 
@@ -174,7 +200,6 @@ extension AppleMapViewController: MKMapViewDelegate {
         }
         
         // MKMarkerAnnotationView vs MKAnnotationView
-        
         view.image = UIImage(named: "purple-pin72")
         view.canShowCallout = true
         view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
@@ -182,8 +207,6 @@ extension AppleMapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) { }
-    
-    private func createSelectedAnnotationView() { }
 }
 
 // MARK: - LocationHandlerDelegate
@@ -210,9 +233,17 @@ extension AppleMapViewController: UISearchBarDelegate {
             return
         }
         searchBar.resignFirstResponder()
-        //loadCoffeeShopsInMap(with: query)
-        //localSearch(with: query)
-        localSearchCompleter(with: query)
+        
+        switch searchType {
+        case .coffee:
+            loadCoffeeShopsInMap(with: query)
+            
+        case .location:
+            localSearch(with: query)
+            
+        case .general:
+            localSearchCompleter(with: query)
+        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -230,7 +261,7 @@ extension AppleMapViewController: UISearchBarDelegate {
     }
 }
 
-// MARK: - // MARK: - UISearchResultsUpdating
+// MARK: - MKLocalSearchCompleterDelegate
 
 extension AppleMapViewController: MKLocalSearchCompleterDelegate {
     

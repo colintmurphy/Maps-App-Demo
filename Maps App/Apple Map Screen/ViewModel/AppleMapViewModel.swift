@@ -23,7 +23,7 @@ protocol AppleMapViewModelProtocol {
     func resetDataSource()
 }
 
-class AppleMapViewModel {
+class AppleMapViewModel: GeocoderHandler {
     
     // MARK: - Properties
     
@@ -131,18 +131,6 @@ class AppleMapViewModel {
     }
     
     // MARK: - Private Methods
-    
-    private func geocoding(query: String, completion: @escaping (CLLocation?, CustomError?) -> Void) {
-        
-        CLGeocoder().geocodeAddressString(query) { placemarks, _ in
-            if let placemarks = placemarks,
-               let location = placemarks.first?.location {
-                completion(location, nil)
-            } else {
-                completion(nil, CustomError.noLocationFound)
-            }
-        }
-    }
     
     private func fetchData(with location: CLLocation, completion: @escaping ([CustomAnnotation]?, CustomError?) -> Void) {
         
