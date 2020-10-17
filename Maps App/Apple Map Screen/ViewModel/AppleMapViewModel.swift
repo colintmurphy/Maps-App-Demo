@@ -31,6 +31,31 @@ class AppleMapViewModel {
     
     // MARK: - Public Methods
     
+    func getAnnotationOfSearch(with searchRequest: MKLocalSearch.Request, completion: @escaping ([CustomAnnotation]?) -> Void) {
+        
+        var annotations: [CustomAnnotation] = []
+        let search = MKLocalSearch(request: searchRequest)
+        search.start { response, error in
+            guard let response = response else {
+                print("Error: \(error?.localizedDescription ?? "Unknown error").")
+                completion(nil)
+                return
+            }
+
+            for item in response.mapItems {
+                annotations.append(CustomAnnotation(coordinate: item.placemark.coordinate, title: item.name ?? "", subtitle: ""))
+            }
+            completion(annotations)
+        }
+    }
+    
+    func moveCameraTo(annotation: MKAnnotation) -> MKCoordinateRegion? {
+        
+        let delta = 2.5
+        let span = MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
+        return MKCoordinateRegion(center: annotation.coordinate, span: span)
+    }
+    
     func moveCameraToShow(annotations: [MKAnnotation]) -> MKCoordinateRegion? {
         
         guard !annotations.isEmpty else { return nil }

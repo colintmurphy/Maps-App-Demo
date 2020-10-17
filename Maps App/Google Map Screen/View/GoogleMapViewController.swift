@@ -12,6 +12,8 @@ import UIKit
 
 class GoogleMapViewController: UIViewController {
     
+    // MARK: - IBOutlets
+    
     @IBOutlet private weak var searchBar: UISearchBar! {
         didSet {
             searchBar.delegate = self
@@ -26,21 +28,23 @@ class GoogleMapViewController: UIViewController {
         }
     }
     
-    private var viewModel = GoogleMapViewModel() {
-        didSet {
-            viewModel.delegate = self
-        }
-    }
+    // MARK: - Properties
     
-    var googleMap: GMSMapView! {
+    private var googleMap: GMSMapView! {
         didSet {
             googleMap.isMyLocationEnabled = true
             googleMap.delegate = self
         }
     }
     
-    lazy var locationHandler = LocationHandler(delegate: self)
-    var dataSource: [CustomMarker] = []
+    private var viewModel = GoogleMapViewModel() {
+        didSet {
+            viewModel.delegate = self
+        }
+    }
+    
+    private lazy var locationHandler = LocationHandler(delegate: self)
+    private var dataSource: [CustomMarker] = []
     
     // MARK: - View Life Cycles
 
@@ -85,38 +89,7 @@ class GoogleMapViewController: UIViewController {
         view.addGestureRecognizer(tap)
     }
     
-    @objc func dismissKeyboard() {
-        searchBar.resignFirstResponder()
-    }
-}
-
-// MARK: - UISearchBarDelegate
-
-extension GoogleMapViewController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) { }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        guard let query = searchBar.text?.trimmingCharacters(in: .whitespaces) else {
-            didFail(withError: CustomError.emptyTextField)
-            return
-        }
-        searchBar.resignFirstResponder()
-        loadCoffeeShopsInMap(with: query)
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(true, animated: true)
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
-        searchBar.resignFirstResponder()
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
+    @objc private func dismissKeyboard() {
         searchBar.resignFirstResponder()
     }
 }
@@ -156,3 +129,34 @@ extension GoogleMapViewController: LocationHandlerDelegate {
 // MARK: - GMSMapViewDelegate
 
 extension GoogleMapViewController: GMSMapViewDelegate { }
+
+// MARK: - UISearchBarDelegate
+
+extension GoogleMapViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) { }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        guard let query = searchBar.text?.trimmingCharacters(in: .whitespaces) else {
+            didFail(withError: CustomError.emptyTextField)
+            return
+        }
+        searchBar.resignFirstResponder()
+        loadCoffeeShopsInMap(with: query)
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.resignFirstResponder()
+    }
+}

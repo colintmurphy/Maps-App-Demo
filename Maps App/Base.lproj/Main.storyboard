@@ -71,7 +71,16 @@
                             </searchBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BeZ-6u-2Dq">
                                 <rect key="frame" x="0.0" y="144" width="414" height="669"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="J4L-7t-Dde">
+                                        <rect key="frame" x="197" y="324.5" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="J4L-7t-Dde" firstAttribute="centerX" secondItem="BeZ-6u-2Dq" secondAttribute="centerX" id="TwT-6V-TII"/>
+                                    <constraint firstItem="J4L-7t-Dde" firstAttribute="centerY" secondItem="BeZ-6u-2Dq" secondAttribute="centerY" id="tpn-MA-25Z"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="w6S-mc-bfz"/>
@@ -88,6 +97,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Coffee Shops" id="KLz-6Y-NYl"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="J4L-7t-Dde" id="iXZ-ox-Gh7"/>
                         <outlet property="mapView" destination="BeZ-6u-2Dq" id="ubS-FS-VAW"/>
                         <outlet property="searchBar" destination="YU0-LY-1Ak" id="Ihl-7z-8Wr"/>
                     </connections>
