@@ -81,9 +81,10 @@ class GoogleMapViewController: UIViewController {
     
     // MARK: - Set Map Region
     
-    private func setMapView(with location: CLLocation) { }
-    
-    private func updateRegionWithDataSource() { }
+    private func updateRegionWithDataSource() {
+        guard let update = viewModel.moveCameraToShow(markers: dataSource) else { return }
+        googleMap.moveCamera(update)
+    }
     
     // MARK: - UI/UX
     
@@ -125,20 +126,38 @@ extension GoogleMapViewController: GoogleViewModelProtocol {
     }
     
     func didFinishLoad() { }
-    func failed(with error: CustomError) { }
+    
+    func failed(with error: CustomError) {
+        
+        var title = "Error"
+        var message = ""
+        switch error {
+        case .emptyTextField:
+            message = "Please make sure you enter something."
+            
+        case .serverError, .decodingFailed:
+            title = "Sorry"
+            message = "It looks like we could not fetch the data."
+            
+        case .noLocationFound:
+            title = "Sorry"
+            message = "It looks like we could get your location."
+        }
+        showAlert(title: title, message: message) { _, _ in }
+    }
 }
 
 // MARK: - LocationHandlerDelegate
 
 extension GoogleMapViewController: LocationHandlerDelegate {
     
+    func didFail(withError error: Error) {
+        print(error)
+    }
+    
     func received(location: CLLocation) {
         let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 0)
         googleMap.camera = camera
-    }
-    
-    func didFail(withError error: Error) {
-        print(error)
     }
 }
 
@@ -153,7 +172,7 @@ extension GoogleMapViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         guard let query = searchBar.text?.trimmingCharacters(in: .whitespaces) else {
-            didFail(withError: CustomError.emptyTextField)
+            failed(with: CustomError.emptyTextField)
             return
         }
         searchBar.resignFirstResponder()

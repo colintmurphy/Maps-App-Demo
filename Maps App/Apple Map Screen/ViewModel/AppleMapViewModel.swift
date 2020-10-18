@@ -99,7 +99,7 @@ class AppleMapViewModel: GeocoderHandler {
         let span = MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
         return MKCoordinateRegion(center: annotation.coordinate, span: span)
     }
-    
+
     func moveCameraToShow(annotations: [MKAnnotation]) -> MKCoordinateRegion? {
         
         guard !annotations.isEmpty else { return nil }
@@ -122,11 +122,12 @@ class AppleMapViewModel: GeocoderHandler {
             }
         }
         
+        let zoom = 1.33
         var region = MKCoordinateRegion()
-        region.center.latitude = minLatitude - (minLatitude - maxLatitude)
-        region.center.longitude = minLongitude - (minLongitude - maxLongitude)
-        region.span.latitudeDelta = abs(minLatitude - maxLatitude)
-        region.span.longitudeDelta = abs(minLongitude - maxLongitude)
+        region.center.latitude = (minLatitude + maxLatitude) / 2
+        region.center.longitude = (minLongitude + maxLongitude) / 2
+        region.span.latitudeDelta = abs(minLatitude - maxLatitude) * zoom
+        region.span.longitudeDelta = abs(minLongitude - maxLongitude) * zoom
         return region
     }
     

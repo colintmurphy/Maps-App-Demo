@@ -32,36 +32,14 @@ class GoogleMapViewModel: GeocoderHandler {
     
     // MARK: - Public Methods
     
-    /*
-    func moveCameraToShow(annotations: [MKAnnotation]) -> MKCoordinateRegion? {
+    func moveCameraToShow(markers: [CustomMarker]) -> GMSCameraUpdate? {
         
-        guard !annotations.isEmpty else { return nil }
-        var minLongitude = annotations[0].coordinate.longitude
-        var maxLongitude = annotations[0].coordinate.longitude
-        var minLatitude = annotations[0].coordinate.latitude
-        var maxLatitude = annotations[0].coordinate.latitude
-        
-        for annotations in annotations {
-            if annotations.coordinate.longitude > maxLongitude {
-                maxLongitude = annotations.coordinate.longitude
-            } else if annotations.coordinate.longitude < minLongitude {
-                minLongitude = annotations.coordinate.longitude
-            }
-            
-            if annotations.coordinate.latitude > maxLatitude {
-                maxLatitude = annotations.coordinate.latitude
-            } else if annotations.coordinate.latitude < minLatitude {
-                minLatitude = annotations.coordinate.latitude
-            }
+        var bounds = GMSCoordinateBounds()
+        for marker in markers {
+            bounds = bounds.includingCoordinate(marker.coordinate)
         }
-        
-        var region = MKCoordinateRegion()
-        region.center.latitude = minLatitude - (minLatitude - maxLatitude)
-        region.center.longitude = minLongitude - (minLongitude - maxLongitude)
-        region.span.latitudeDelta = abs(minLatitude - maxLatitude)
-        region.span.longitudeDelta = abs(minLongitude - maxLongitude)
-        return region
-    }*/
+        return GMSCameraUpdate.fit(bounds)
+    }
     
     func loadMarkers(with query: String, completion: @escaping ([CustomMarker]?, CustomError?) -> Void) {
         
