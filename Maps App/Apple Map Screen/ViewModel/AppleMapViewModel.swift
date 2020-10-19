@@ -12,6 +12,7 @@ protocol AppleViewModelProtocol: AnyObject {
     func didFinishLoad()
     func showActivity()
     func hideActivity()
+    func updateMapWithResults()
     func failed(with error: CustomError)
 }
 
@@ -27,11 +28,58 @@ class AppleMapViewModel: GeocoderHandler {
     
     // MARK: - Properties
     
+    private var dataSource: [MKAnnotation] = []
+    private var searchType = SearchType.coffee
+    
+    var searchCompleter: MKLocalSearchCompleter?
+    var searchResults: [MKLocalSearchCompletion] = []
+    
     weak var delegate: AppleViewModelProtocol?
+    
+    // MARK: - Return Data
+    
+    func getSearchType() -> SearchType {
+        return searchType
+    }
+    
+    func getAnnotations() -> [MKAnnotation] {
+        return dataSource
+    }
+    
+    // MARK: - Handle Search Type
+    
+    func searchWithCompleter(with query: String, controller: AppleMapViewController, region: MKCoordinateRegion) {
+        
+        searchCompleter = MKLocalSearchCompleter()
+        searchCompleter?.delegate = controller
+        searchCompleter?.region = region
+        searchCompleter?.queryFragment = query
+    }
+    
+    func search(with query: String, region: MKCoordinateRegion?) {
+        
+        switch searchType {
+        
+        case .coffee:
+            loadAnnotations(with: query)
+            
+        case .location:
+            let searchRequest = MKLocalSearch.Request()
+            searchRequest.naturalLanguageQuery = query
+            guard let region = region else { return }
+            searchRequest.region = region
+            loadAnnotation(with: searchRequest)
+            
+        case .general:
+            guard !searchResults.isEmpty else { return }
+            loadAnnotations(with: searchResults)// { _ in }
+        }
+        delegate?.updateMapWithResults()
+    }
     
     // MARK: - Get Annotations
     
-    func loadAnnotations(with searchCompletionResults: [MKLocalSearchCompletion], completion: @escaping ([CustomAnnotation]) -> Void) {
+    func loadAnnotations(with searchCompletionResults: [MKLocalSearchCompletion]) {
         
         let group = DispatchGroup()
         var annotations: [CustomAnnotation] = []
@@ -47,29 +95,30 @@ class AppleMapViewModel: GeocoderHandler {
         }
         
         group.notify(queue: DispatchQueue.main) {
-            completion(annotations)
+            self.dataSource = annotations
+            self.delegate?.updateMapWithResults()
         }
     }
     
-    func loadAnnotation(with searchRequest: MKLocalSearch.Request, completion: @escaping ([CustomAnnotation]?) -> Void) {
+    func loadAnnotation(with searchRequest: MKLocalSearch.Request) {
         
         var annotations: [CustomAnnotation] = []
         let search = MKLocalSearch(request: searchRequest)
         search.start { response, error in
             guard let response = response else {
                 print("Error: \(error?.localizedDescription ?? "Unknown error").")
-                completion(nil)
                 return
             }
 
             for item in response.mapItems {
                 annotations.append(CustomAnnotation(coordinate: item.placemark.coordinate, title: item.name ?? "", subtitle: ""))
             }
-            completion(annotations)
+            self.dataSource = annotations
+            self.delegate?.updateMapWithResults()
         }
     }
     
-    func loadAnnotations(with query: String, completion: @escaping ([CustomAnnotation]?, CustomError?) -> Void) {
+    func loadAnnotations(with query: String) {
         
         delegate?.showActivity()
         geocoding(query: query) { location, error in
@@ -79,46 +128,82 @@ class AppleMapViewModel: GeocoderHandler {
             } else if let location = location {
                 
                 self.fetchData(with: location) { annotations, error in
+                    self.delegate?.hideActivity()
                     if let error = error {
-                        self.delegate?.hideActivity()
                         self.delegate?.failed(with: error)
                     } else if let annotations = annotations {
-                        self.delegate?.hideActivity()
-                        completion(annotations, nil)
+                        self.dataSource = annotations
+                        self.delegate?.updateMapWithResults()
                     }
                 }
             }
         }
     }
     
+    // MARK: - Update UI
+    
+    func changeSearchType(with type: SearchType) -> String {
+        
+        searchType = type
+        switch searchType {
+        case .coffee:
+            return "Where do you want to find a cup of joe?"
+        
+        case .location:
+            return "What location are you looking for"
+        
+        case .general:
+            return "Enter a search"
+        }
+    }
+    
+    func generateCustomAnnotation(annotation: MKAnnotation, mapView: MKMapView) -> MKAnnotationView? {
+        
+        guard let annotation = annotation as? CustomAnnotation else { return nil }
+        let view: MKAnnotationView
+        
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: "CustomAnnotation") {
+            dequeuedView.annotation = annotation
+            view = dequeuedView
+        } else {
+            view = MKAnnotationView(annotation: annotation, reuseIdentifier: "CustomAnnotation")
+        }
+        
+        view.image = UIImage(named: "purple-pin72")
+        view.canShowCallout = true
+        view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        return view
+    }
+    
     // MARK: - Move Camera
     
-    func moveCameraTo(annotation: MKAnnotation) -> MKCoordinateRegion? {
+    func moveCameraToShowSingleAnnotation() -> MKCoordinateRegion? {
         
+        guard !dataSource.isEmpty else { return nil }
         let delta = 2.5
         let span = MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
-        return MKCoordinateRegion(center: annotation.coordinate, span: span)
+        return MKCoordinateRegion(center: dataSource[0].coordinate, span: span)
     }
 
-    func moveCameraToShow(annotations: [MKAnnotation]) -> MKCoordinateRegion? {
+    func moveCameraToShowAnnotations() -> MKCoordinateRegion? {
         
-        guard !annotations.isEmpty else { return nil }
-        var minLongitude = annotations[0].coordinate.longitude
-        var maxLongitude = annotations[0].coordinate.longitude
-        var minLatitude = annotations[0].coordinate.latitude
-        var maxLatitude = annotations[0].coordinate.latitude
+        guard !dataSource.isEmpty else { return nil }
+        var minLongitude = dataSource[0].coordinate.longitude
+        var maxLongitude = dataSource[0].coordinate.longitude
+        var minLatitude = dataSource[0].coordinate.latitude
+        var maxLatitude = dataSource[0].coordinate.latitude
         
-        for annotations in annotations {
-            if annotations.coordinate.longitude > maxLongitude {
-                maxLongitude = annotations.coordinate.longitude
-            } else if annotations.coordinate.longitude < minLongitude {
-                minLongitude = annotations.coordinate.longitude
+        for annotation in dataSource {
+            if annotation.coordinate.longitude > maxLongitude {
+                maxLongitude = annotation.coordinate.longitude
+            } else if annotation.coordinate.longitude < minLongitude {
+                minLongitude = annotation.coordinate.longitude
             }
             
-            if annotations.coordinate.latitude > maxLatitude {
-                maxLatitude = annotations.coordinate.latitude
-            } else if annotations.coordinate.latitude < minLatitude {
-                minLatitude = annotations.coordinate.latitude
+            if annotation.coordinate.latitude > maxLatitude {
+                maxLatitude = annotation.coordinate.latitude
+            } else if annotation.coordinate.latitude < minLatitude {
+                minLatitude = annotation.coordinate.latitude
             }
         }
         
@@ -131,7 +216,7 @@ class AppleMapViewModel: GeocoderHandler {
         return region
     }
     
-    // MARK: - Private Methods
+    // MARK: - Fetch Data
     
     private func fetchData(with location: CLLocation, completion: @escaping ([CustomAnnotation]?, CustomError?) -> Void) {
         

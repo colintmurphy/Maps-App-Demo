@@ -37,14 +37,8 @@ class GoogleMapViewController: UIViewController {
         }
     }
     
-    private var viewModel = GoogleMapViewModel() {
-        didSet {
-            viewModel.delegate = self
-        }
-    }
-    
+    private var viewModel = GoogleMapViewModel()
     private lazy var locationHandler = LocationHandler(delegate: self)
-    private var dataSource: [CustomMarker] = []
     
     // MARK: - View Life Cycles
 
@@ -60,36 +54,11 @@ class GoogleMapViewController: UIViewController {
         }
     }
     
-    // MARK: - Markers
-    
-    private func loadCoffeeShopsInMap(with query: String) {
-        
-        viewModel.loadMarkers(with: query) { markers, error in
-            if let markers = markers {
-                self.googleMap.clear()
-                self.dataSource.removeAll()
-                self.dataSource.append(contentsOf: markers)
-                for index in 0..<self.dataSource.count {
-                    self.dataSource[index].map = self.googleMap
-                }
-                self.updateRegionWithDataSource()
-            } else if let error = error {
-                print(error)
-            }
-        }
-    }
-    
-    // MARK: - Set Map Region
-    
-    private func updateRegionWithDataSource() {
-        guard let update = viewModel.moveCameraToShow(markers: dataSource) else { return }
-        googleMap.moveCamera(update)
-    }
-    
     // MARK: - UI/UX
     
     private func setup() {
         
+        viewModel.delegate = self
         googleMap = GMSMapView(frame: mapView.frame)
         view.addSubview(googleMap)
         locationHandler.getUserLocation()
@@ -123,6 +92,11 @@ extension GoogleMapViewController: GoogleViewModelProtocol {
     
     func hideActivity() {
         activityIndicator.stopAnimating()
+    }
+    
+    func updateMapView() {
+        guard let update = viewModel.moveCameraToShow() else { return }
+        googleMap.moveCamera(update)
     }
     
     func didFinishLoad() { }
@@ -163,7 +137,18 @@ extension GoogleMapViewController: LocationHandlerDelegate {
 
 // MARK: - GMSMapViewDelegate
 
-extension GoogleMapViewController: GMSMapViewDelegate { }
+extension GoogleMapViewController: GMSMapViewDelegate {
+    
+    func mapView(_ mapView: GMSMapView, markerInfoContents marker: GMSMarker) -> UIView? {
+        
+        if let viewFromNib = Bundle.main.loadNibNamed("AppleSelectedAnnotationView", owner: self, options: nil)?.first as? AppleSelectedAnnotationView,
+           let title = marker.title {
+            viewFromNib.set(title: title)
+            return viewFromNib
+        }
+        return nil
+    }
+}
 
 // MARK: - UISearchBarDelegate
 
@@ -176,7 +161,7 @@ extension GoogleMapViewController: UISearchBarDelegate {
             return
         }
         searchBar.resignFirstResponder()
-        loadCoffeeShopsInMap(with: query)
+        viewModel.loadMarkers(with: query, map: googleMap)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

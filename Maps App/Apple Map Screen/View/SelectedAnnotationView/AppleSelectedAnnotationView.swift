@@ -7,9 +7,12 @@
 
 import MapKit
 
-/*
-class AppleSelectedAnnotationView: MKAnnotationView {
+class AppleSelectedAnnotationView: UIStackView {
     
-    let label
+    @IBOutlet private weak var shopLabel: UILabel!
+    @IBOutlet private weak var detailButton: UIButton!
+    
+    func set(title: String) {
+        shopLabel.text = title
+    }
 }
-*/

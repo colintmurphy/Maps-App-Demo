@@ -13,6 +13,7 @@ protocol GoogleViewModelProtocol: AnyObject {
     func didFinishLoad()
     func showActivity()
     func hideActivity()
+    func updateMapView()
     func failed(with error: CustomError)
 }
 
@@ -28,20 +29,26 @@ class GoogleMapViewModel: GeocoderHandler {
     
     // MARK: - Properties
     
+    private var dataSource: [CustomMarker] = []
+    
     weak var delegate: GoogleViewModelProtocol?
     
     // MARK: - Public Methods
     
-    func moveCameraToShow(markers: [CustomMarker]) -> GMSCameraUpdate? {
+    func getMarkers() -> [CustomMarker] {
+        return dataSource
+    }
+    
+    func moveCameraToShow() -> GMSCameraUpdate? {
         
         var bounds = GMSCoordinateBounds()
-        for marker in markers {
+        for marker in dataSource {
             bounds = bounds.includingCoordinate(marker.coordinate)
         }
         return GMSCameraUpdate.fit(bounds)
     }
     
-    func loadMarkers(with query: String, completion: @escaping ([CustomMarker]?, CustomError?) -> Void) {
+    func loadMarkers(with query: String, map: GMSMapView) {
         
         delegate?.showActivity()
         geocoding(query: query) { location, error in
@@ -56,7 +63,11 @@ class GoogleMapViewModel: GeocoderHandler {
                         self.delegate?.failed(with: error)
                     } else if let markers = markers {
                         self.delegate?.hideActivity()
-                        completion(markers, nil)
+                        self.dataSource = markers
+                        for index in 0..<self.dataSource.count {
+                            self.dataSource[index].map = map
+                        }
+                        self.delegate?.updateMapView()
                     }
                 }
             }

@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" id="ecF-9W-c1G">
+        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" id="ecF-9W-c1G" customClass="AppleSelectedAnnotationView" customModule="Maps_App" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="200" height="110"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -22,6 +22,9 @@
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shop Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hfB-Yv-PJQ">
                     <rect key="frame" x="50" y="0.0" width="101" height="110"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="Gel-rE-DmL"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                     <color key="textColor" red="0.13356211779999999" green="0.1083404347" blue="0.2190881968" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -37,6 +40,10 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="jTo-dw-GBe"/>
             <color key="backgroundColor" red="0.49146646259999999" green="0.33319979910000003" blue="0.99987798930000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <connections>
+                <outlet property="detailButton" destination="DYh-PN-P1T" id="TwQ-bY-7Mx"/>
+                <outlet property="shopLabel" destination="hfB-Yv-PJQ" id="JjX-SS-vLh"/>
+            </connections>
             <point key="canvasLocation" x="220" y="-484"/>
         </stackView>
     </objects>
