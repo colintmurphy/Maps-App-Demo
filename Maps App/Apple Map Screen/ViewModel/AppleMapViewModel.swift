@@ -171,7 +171,8 @@ class AppleMapViewModel: GeocoderHandler {
         
         view.image = UIImage(named: "purple-pin72")
         view.canShowCallout = true
-        view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        //view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        
         return view
     }
     

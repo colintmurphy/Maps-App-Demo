@@ -21,8 +21,8 @@
 		218E296D253A788C00723789 /* ShopResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E296C253A788C00723789 /* ShopResponse.swift */; };
 		218E2970253A789600723789 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E296F253A789600723789 /* CustomAnnotation.swift */; };
 		218E2981253A924900723789 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E2980253A924900723789 /* GoogleMapViewController.swift */; };
-		218E2985253B3DEB00723789 /* AppleSelectedAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E2984253B3DEB00723789 /* AppleSelectedAnnotationView.swift */; };
-		218E2988253B3F5800723789 /* AppleSelectedAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 218E2987253B3F5800723789 /* AppleSelectedAnnotationView.xib */; };
+		218E2985253B3DEB00723789 /* SelectedAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E2984253B3DEB00723789 /* SelectedAnnotationView.swift */; };
+		218E2988253B3F5800723789 /* SelectedAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 218E2987253B3F5800723789 /* SelectedAnnotationView.xib */; };
 		218E298C253B44C300723789 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E298B253B44C300723789 /* CustomError.swift */; };
 		218E2997253B63A200723789 /* GoogleMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E2996253B63A200723789 /* GoogleMapViewModel.swift */; };
 		218E299C253B6AA700723789 /* CustomMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E299B253B6AA700723789 /* CustomMarker.swift */; };
@@ -49,8 +49,8 @@
 		218E296C253A788C00723789 /* ShopResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopResponse.swift; sourceTree = "<group>"; };
 		218E296F253A789600723789 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		218E2980253A924900723789 /* GoogleMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapViewController.swift; sourceTree = "<group>"; };
-		218E2984253B3DEB00723789 /* AppleSelectedAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSelectedAnnotationView.swift; sourceTree = "<group>"; };
-		218E2987253B3F5800723789 /* AppleSelectedAnnotationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AppleSelectedAnnotationView.xib; sourceTree = "<group>"; };
+		218E2984253B3DEB00723789 /* SelectedAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedAnnotationView.swift; sourceTree = "<group>"; };
+		218E2987253B3F5800723789 /* SelectedAnnotationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectedAnnotationView.xib; sourceTree = "<group>"; };
 		218E298B253B44C300723789 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		218E2996253B63A200723789 /* GoogleMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleMapViewModel.swift; sourceTree = "<group>"; };
 		218E299B253B6AA700723789 /* CustomMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarker.swift; sourceTree = "<group>"; };
@@ -226,8 +226,8 @@
 		218E2991253B581300723789 /* SelectedAnnotationView */ = {
 			isa = PBXGroup;
 			children = (
-				218E2984253B3DEB00723789 /* AppleSelectedAnnotationView.swift */,
-				218E2987253B3F5800723789 /* AppleSelectedAnnotationView.xib */,
+				218E2984253B3DEB00723789 /* SelectedAnnotationView.swift */,
+				218E2987253B3F5800723789 /* SelectedAnnotationView.xib */,
 			);
 			path = SelectedAnnotationView;
 			sourceTree = "<group>";
@@ -345,7 +345,7 @@
 			files = (
 				219C1531253BA092008FF963 /* GoogleMapDarkStyle.json in Resources */,
 				218E293F253A759700723789 /* LaunchScreen.storyboard in Resources */,
-				218E2988253B3F5800723789 /* AppleSelectedAnnotationView.xib in Resources */,
+				218E2988253B3F5800723789 /* SelectedAnnotationView.xib in Resources */,
 				218E293C253A759700723789 /* Assets.xcassets in Resources */,
 				218E293A253A759600723789 /* Main.storyboard in Resources */,
 			);
@@ -433,7 +433,7 @@
 				218E2981253A924900723789 /* GoogleMapViewController.swift in Sources */,
 				218E2997253B63A200723789 /* GoogleMapViewModel.swift in Sources */,
 				218E296A253A788200723789 /* AppleMapViewModel.swift in Sources */,
-				218E2985253B3DEB00723789 /* AppleSelectedAnnotationView.swift in Sources */,
+				218E2985253B3DEB00723789 /* SelectedAnnotationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

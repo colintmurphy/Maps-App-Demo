@@ -139,10 +139,11 @@ extension GoogleMapViewController: LocationHandlerDelegate {
 
 extension GoogleMapViewController: GMSMapViewDelegate {
     
-    func mapView(_ mapView: GMSMapView, markerInfoContents marker: GMSMarker) -> UIView? {
+    func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
         
-        if let viewFromNib = Bundle.main.loadNibNamed("AppleSelectedAnnotationView", owner: self, options: nil)?.first as? AppleSelectedAnnotationView,
+        if let viewFromNib = Bundle.main.loadNibNamed("SelectedAnnotationView", owner: self, options: nil)?.first as? SelectedAnnotationView,
            let title = marker.title {
+            
             viewFromNib.set(title: title)
             return viewFromNib
         }

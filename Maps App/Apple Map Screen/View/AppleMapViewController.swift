@@ -119,16 +119,14 @@ extension AppleMapViewController: AppleViewModelProtocol {
 extension AppleMapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        // MKMarkerAnnotationView vs MKAnnotationView
-        return viewModel.generateCustomAnnotation(annotation: annotation, mapView: mapView)
-    }
-    
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        if let viewFromNib = Bundle.main.loadNibNamed("AppleSelectedAnnotationView", owner: self, options: nil)?.first as? AppleSelectedAnnotationView {
-            viewFromNib.set(title: "Custom Title")
-            view.addSubview(viewFromNib)
+        if let view = viewModel.generateCustomAnnotation(annotation: annotation, mapView: mapView),
+           let viewFromNib = Bundle.main.loadNibNamed("SelectedAnnotationView", owner: self, options: nil)?.first as? SelectedAnnotationView {
+            viewFromNib.setForApple(title: "Custom Title")
+            view.detailCalloutAccessoryView = viewFromNib
+            return view
         }
+        return nil
     }
 }
 
