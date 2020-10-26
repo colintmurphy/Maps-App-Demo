@@ -156,7 +156,6 @@
 			children = (
 				218E2936253A759600723789 /* AppleMapViewController.swift */,
 				2129DE9F2540A4B8009EE705 /* CofffeeAnnotationView */,
-				218E2991253B581300723789 /* SelectedAnnotationView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -228,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				218E2980253A924900723789 /* GoogleMapViewController.swift */,
+				218E2991253B581300723789 /* SelectedAnnotationView */,
 			);
 			path = View;
 			sourceTree = "<group>";

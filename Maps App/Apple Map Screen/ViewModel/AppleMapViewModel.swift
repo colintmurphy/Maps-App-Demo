@@ -74,7 +74,7 @@ class AppleMapViewModel: GeocoderHandler {
             
         case .general:
             guard !searchResults.isEmpty else { return }
-            loadAnnotations(with: searchQuery)
+            loadAnnotations(with: searchResults)
         }
     }
     
@@ -248,17 +248,15 @@ class AppleMapViewModel: GeocoderHandler {
     
     func updateRegion(_ region: MKCoordinateRegion) {
         
-        //DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-            let location = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)
-            self.fetchData(with: location) { annotations, _ in
-                if let annotations = annotations {
-                    self.dataSource.append(contentsOf: annotations)
-                    DispatchQueue.main.async {
-                        self.delegate?.appendMapWithResults(annotations: annotations)
-                    }
+        let location = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)
+        self.fetchData(with: location) { annotations, _ in
+            if let annotations = annotations {
+                self.dataSource.append(contentsOf: annotations)
+                DispatchQueue.main.async {
+                    self.delegate?.appendMapWithResults(annotations: annotations)
                 }
             }
-        //}
+        }
     }
     
     // MARK: - Fetch Data
@@ -280,7 +278,3 @@ class AppleMapViewModel: GeocoderHandler {
         }
     }
 }
-
-/*
- zoom out, see if can get more annotations while moving both maps
- */

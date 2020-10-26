@@ -10,6 +10,8 @@ import UIKit
 
 class CoffeeMKAnnotationView: MKAnnotationView {
     
+    // MARK: - IBOutlets
+    
     @IBOutlet private weak var reviewLabel: UILabel!
     @IBOutlet private weak var oneStarImageView: UIImageView!
     @IBOutlet private weak var twoStarImageView: UIImageView!
@@ -19,11 +21,7 @@ class CoffeeMKAnnotationView: MKAnnotationView {
     @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var contentSubView: UIView!
     
-    override var annotation: MKAnnotation? {
-        didSet {
-            //configureDetailView()
-        }
-    }
+    // MARK: - Inits
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -34,6 +32,8 @@ class CoffeeMKAnnotationView: MKAnnotationView {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
+    
+    // MARK: - Configure View
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -58,7 +58,6 @@ class CoffeeMKAnnotationView: MKAnnotationView {
         Bundle.main.loadNibNamed("CoffeeMKAnnotationView", owner: self, options: nil)
         contentView.frame = self.bounds
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        contentSubView.layer.cornerRadius = 15
         
         let snapshotView = UIView()
         snapshotView.translatesAutoresizingMaskIntoConstraints = false
