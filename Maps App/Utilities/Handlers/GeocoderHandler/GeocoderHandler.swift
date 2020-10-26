@@ -30,11 +30,14 @@ extension GeocoderHandler {
         let location = CLLocation(latitude: latitude, longitude: longitude)
         CLGeocoder().reverseGeocodeLocation(location) { placemarks, _ in
             if let placemarks = placemarks,
-               let name = placemarks.first?.name,
-               let country = placemarks.first?.country,
-               let city = placemarks.first?.locality,
-               let code = placemarks.first?.postalCode {
-                let place = "\(name), \(city), \(country) \(code)"
+               let first = placemarks.first
+               //let name = placemarks.first?.name,
+               //let country = placemarks.first?.country,
+               //let city = placemarks.first?.locality//,
+               //let code = placemarks.first?.postalCode
+            {
+                let place = "\(first)"
+                //let place = "\(name), \(city), \(country) \(code)"
                 completion(place, nil)
             } else {
                 completion(nil, CustomError.noLocationFound)

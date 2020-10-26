@@ -13,6 +13,7 @@ class SelectedAnnotationView: UIStackView {
     @IBOutlet private weak var detailButton: UIButton!
     
     func set(title: String) {
+        
         shopLabel.text = title
         detailButton.isHidden = true
         layer.cornerRadius = bounds.height / 2.5
@@ -20,7 +21,9 @@ class SelectedAnnotationView: UIStackView {
     }
     
     func setForApple(title: String) {
-        shopLabel.isHidden = true
+        
+        shopLabel.text = title
+        //shopLabel.isHidden = true
         detailButton.isHidden = true
         backgroundColor = .clear
     }

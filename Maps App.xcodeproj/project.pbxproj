@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2129DE9A2540A377009EE705 /* CoffeeMKAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2129DE992540A377009EE705 /* CoffeeMKAnnotationView.xib */; };
+		2129DE9D2540A434009EE705 /* CoffeeMKAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2129DE9C2540A434009EE705 /* CoffeeMKAnnotationView.swift */; };
 		218E2933253A759600723789 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E2932253A759600723789 /* AppDelegate.swift */; };
 		218E2935253A759600723789 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E2934253A759600723789 /* SceneDelegate.swift */; };
 		218E2937253A759600723789 /* AppleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E2936253A759600723789 /* AppleMapViewController.swift */; };
@@ -29,10 +31,13 @@
 		219C1531253BA092008FF963 /* GoogleMapDarkStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = 219C1530253BA092008FF963 /* GoogleMapDarkStyle.json */; };
 		219C1536253BB094008FF963 /* SearchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219C1535253BB094008FF963 /* SearchType.swift */; };
 		219C1541253BB1E8008FF963 /* GeocoderHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219C1540253BB1E8008FF963 /* GeocoderHandler.swift */; };
+		21FE8C4825464D0E0052EFF7 /* ReviewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FE8C4725464D0E0052EFF7 /* ReviewType.swift */; };
 		99D5066FB4E591862FA3654D /* Pods_Maps_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9D1431CF8ACE09D86894A83 /* Pods_Maps_App.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2129DE992540A377009EE705 /* CoffeeMKAnnotationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CoffeeMKAnnotationView.xib; sourceTree = "<group>"; };
+		2129DE9C2540A434009EE705 /* CoffeeMKAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeMKAnnotationView.swift; sourceTree = "<group>"; };
 		218E292F253A759600723789 /* Maps App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Maps App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		218E2932253A759600723789 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		218E2934253A759600723789 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +62,7 @@
 		219C1530253BA092008FF963 /* GoogleMapDarkStyle.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = GoogleMapDarkStyle.json; sourceTree = "<group>"; };
 		219C1535253BB094008FF963 /* SearchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchType.swift; sourceTree = "<group>"; };
 		219C1540253BB1E8008FF963 /* GeocoderHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocoderHandler.swift; sourceTree = "<group>"; };
+		21FE8C4725464D0E0052EFF7 /* ReviewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewType.swift; sourceTree = "<group>"; };
 		31B73057F868C4E1FD68CD04 /* Pods-Maps App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maps App.debug.xcconfig"; path = "Target Support Files/Pods-Maps App/Pods-Maps App.debug.xcconfig"; sourceTree = "<group>"; };
 		B50BACEFB356C7C42028E93B /* Pods-Maps App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maps App.release.xcconfig"; path = "Target Support Files/Pods-Maps App/Pods-Maps App.release.xcconfig"; sourceTree = "<group>"; };
 		B9D1431CF8ACE09D86894A83 /* Pods_Maps_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Maps_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +80,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2129DE9F2540A4B8009EE705 /* CofffeeAnnotationView */ = {
+			isa = PBXGroup;
+			children = (
+				2129DE9C2540A434009EE705 /* CoffeeMKAnnotationView.swift */,
+				2129DE992540A377009EE705 /* CoffeeMKAnnotationView.xib */,
+			);
+			path = CofffeeAnnotationView;
+			sourceTree = "<group>";
+		};
 		218E2926253A759600723789 = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +146,7 @@
 			children = (
 				218E296F253A789600723789 /* CustomAnnotation.swift */,
 				219C1535253BB094008FF963 /* SearchType.swift */,
+				21FE8C4725464D0E0052EFF7 /* ReviewType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -139,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				218E2936253A759600723789 /* AppleMapViewController.swift */,
+				2129DE9F2540A4B8009EE705 /* CofffeeAnnotationView */,
 				218E2991253B581300723789 /* SelectedAnnotationView */,
 			);
 			path = View;
@@ -346,6 +363,7 @@
 				219C1531253BA092008FF963 /* GoogleMapDarkStyle.json in Resources */,
 				218E293F253A759700723789 /* LaunchScreen.storyboard in Resources */,
 				218E2988253B3F5800723789 /* SelectedAnnotationView.xib in Resources */,
+				2129DE9A2540A377009EE705 /* CoffeeMKAnnotationView.xib in Resources */,
 				218E293C253A759700723789 /* Assets.xcassets in Resources */,
 				218E293A253A759600723789 /* Main.storyboard in Resources */,
 			);
@@ -424,7 +442,9 @@
 				218E2937253A759600723789 /* AppleMapViewController.swift in Sources */,
 				218E2965253A77E500723789 /* LocationHandler.swift in Sources */,
 				219C1541253BB1E8008FF963 /* GeocoderHandler.swift in Sources */,
+				2129DE9D2540A434009EE705 /* CoffeeMKAnnotationView.swift in Sources */,
 				218E2933253A759600723789 /* AppDelegate.swift in Sources */,
+				21FE8C4825464D0E0052EFF7 /* ReviewType.swift in Sources */,
 				218E2935253A759600723789 /* SceneDelegate.swift in Sources */,
 				218E299C253B6AA700723789 /* CustomMarker.swift in Sources */,
 				218E296D253A788C00723789 /* ShopResponse.swift in Sources */,

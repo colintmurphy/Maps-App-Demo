@@ -14,9 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        #warning("INSERT GOOGLE API HERE, ENSURE GOOGLE MAPS ENABLED")
-        GMSPlacesClient.provideAPIKey("")
-        GMSServices.provideAPIKey("")
+        GMSPlacesClient.provideAPIKey("AIzaSyD5Pc99XpJeNjCaitz8nAzWiaHXvEN6By4")
+        GMSServices.provideAPIKey("AIzaSyD5Pc99XpJeNjCaitz8nAzWiaHXvEN6By4")
         return true
     }
 

@@ -13,6 +13,7 @@ protocol AppleViewModelProtocol: AnyObject {
     func showActivity()
     func hideActivity()
     func updateMapWithResults()
+    func appendMapWithResults(annotations: [CustomAnnotation])
     func failed(with error: CustomError)
 }
 
@@ -33,6 +34,7 @@ class AppleMapViewModel: GeocoderHandler {
     
     var searchCompleter: MKLocalSearchCompleter?
     var searchResults: [MKLocalSearchCompletion] = []
+    private var searchQuery = ""
     
     weak var delegate: AppleViewModelProtocol?
     
@@ -54,12 +56,12 @@ class AppleMapViewModel: GeocoderHandler {
         searchCompleter?.delegate = controller
         searchCompleter?.region = region
         searchCompleter?.queryFragment = query
+        searchQuery = query
     }
     
     func search(with query: String, region: MKCoordinateRegion?) {
         
         switch searchType {
-        
         case .coffee:
             loadAnnotations(with: query)
             
@@ -72,9 +74,8 @@ class AppleMapViewModel: GeocoderHandler {
             
         case .general:
             guard !searchResults.isEmpty else { return }
-            loadAnnotations(with: searchResults)// { _ in }
+            loadAnnotations(with: searchQuery)
         }
-        delegate?.updateMapWithResults()
     }
     
     // MARK: - Get Annotations
@@ -158,41 +159,69 @@ class AppleMapViewModel: GeocoderHandler {
     }
     
     func generateCustomAnnotation(annotation: MKAnnotation, mapView: MKMapView) -> MKAnnotationView? {
-        
+
         guard let annotation = annotation as? CustomAnnotation else { return nil }
-        let view: MKAnnotationView
+        let view: CoffeeMKAnnotationView
         
-        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: "CustomAnnotation") {
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: "CustomAnnotation") as? CoffeeMKAnnotationView {
             dequeuedView.annotation = annotation
             view = dequeuedView
         } else {
-            view = MKAnnotationView(annotation: annotation, reuseIdentifier: "CustomAnnotation")
+            view = CoffeeMKAnnotationView(annotation: annotation, reuseIdentifier: "CustomAnnotation")
         }
         
-        view.image = UIImage(named: "purple-pin72")
-        view.canShowCallout = true
-        //view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-        
+        switch searchType {
+        case .coffee:
+            let randomRating = Int.random(in: 1...5)
+            let review = getRating(with: randomRating)
+            view.set(review: review, rating: randomRating)
+            
+        case .location, .general:
+            view.detailCalloutAccessoryView = nil
+        }
         return view
+    }
+    
+    private func getRating(with review: Int) -> String {
+        
+        switch review {
+        case 1:
+            return ReviewType.reallyBad.rawValue
+            
+        case 2:
+            return ReviewType.bad.rawValue
+            
+        case 3:
+            return ReviewType.okay.rawValue
+            
+        case 4:
+            return ReviewType.good.rawValue
+            
+        case 5:
+            return ReviewType.great.rawValue
+            
+        default:
+            return ReviewType.okay.rawValue
+        }
     }
     
     // MARK: - Move Camera
     
     func moveCameraToShowSingleAnnotation() -> MKCoordinateRegion? {
         
-        guard !dataSource.isEmpty else { return nil }
+        guard let firstLocation = dataSource.first else { return nil }
         let delta = 2.5
         let span = MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
-        return MKCoordinateRegion(center: dataSource[0].coordinate, span: span)
+        return MKCoordinateRegion(center: firstLocation.coordinate, span: span)
     }
 
     func moveCameraToShowAnnotations() -> MKCoordinateRegion? {
         
-        guard !dataSource.isEmpty else { return nil }
-        var minLongitude = dataSource[0].coordinate.longitude
-        var maxLongitude = dataSource[0].coordinate.longitude
-        var minLatitude = dataSource[0].coordinate.latitude
-        var maxLatitude = dataSource[0].coordinate.latitude
+        guard let firstLocation = dataSource.first else { return nil }
+        var minLongitude = firstLocation.coordinate.longitude
+        var maxLongitude = firstLocation.coordinate.longitude
+        var minLatitude = firstLocation.coordinate.latitude
+        var maxLatitude = firstLocation.coordinate.latitude
         
         for annotation in dataSource {
             if annotation.coordinate.longitude > maxLongitude {
@@ -217,6 +246,21 @@ class AppleMapViewModel: GeocoderHandler {
         return region
     }
     
+    func updateRegion(_ region: MKCoordinateRegion) {
+        
+        //DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+            let location = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)
+            self.fetchData(with: location) { annotations, _ in
+                if let annotations = annotations {
+                    self.dataSource.append(contentsOf: annotations)
+                    DispatchQueue.main.async {
+                        self.delegate?.appendMapWithResults(annotations: annotations)
+                    }
+                }
+            }
+        //}
+    }
+    
     // MARK: - Fetch Data
     
     private func fetchData(with location: CLLocation, completion: @escaping ([CustomAnnotation]?, CustomError?) -> Void) {
@@ -224,7 +268,6 @@ class AppleMapViewModel: GeocoderHandler {
         NetworkManager.manager.request(ShopResponse.self, withCoordinate: location.coordinate) { result in
             switch result {
             case .success(let shopResponse):
-
                 var annotations: [CustomAnnotation] = []
                 for shop in shopResponse.shops {
                     annotations.append(CustomAnnotation(place: shop))
@@ -237,3 +280,7 @@ class AppleMapViewModel: GeocoderHandler {
         }
     }
 }
+
+/*
+ zoom out, see if can get more annotations while moving both maps
+ */

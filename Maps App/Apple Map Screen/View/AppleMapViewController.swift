@@ -103,7 +103,7 @@ extension AppleMapViewController: AppleViewModelProtocol {
     
     func updateMapWithResults() {
         
-        mapView.addAnnotations(self.viewModel.getAnnotations())
+        mapView.addAnnotations(viewModel.getAnnotations())
         switch viewModel.getSearchType() {
         case .coffee, .general:
             showAllAnnotationsOnMap()
@@ -111,6 +111,10 @@ extension AppleMapViewController: AppleViewModelProtocol {
         case .location:
             showSingleAnnotationOnMap()
         }
+    }
+    
+    func appendMapWithResults(annotations: [CustomAnnotation]) {
+        mapView.addAnnotations(annotations)
     }
 }
 
@@ -120,10 +124,7 @@ extension AppleMapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
-        if let view = viewModel.generateCustomAnnotation(annotation: annotation, mapView: mapView),
-           let viewFromNib = Bundle.main.loadNibNamed("SelectedAnnotationView", owner: self, options: nil)?.first as? SelectedAnnotationView {
-            viewFromNib.setForApple(title: "Custom Title")
-            view.detailCalloutAccessoryView = viewFromNib
+        if let view = viewModel.generateCustomAnnotation(annotation: annotation, mapView: mapView) {
             return view
         }
         return nil
@@ -144,8 +145,6 @@ extension AppleMapViewController: LocationHandlerDelegate {
 // MARK: - UISearchBarDelegate
 
 extension AppleMapViewController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) { }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
