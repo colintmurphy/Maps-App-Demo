@@ -23,7 +23,7 @@
 - DispatchGroup
 - URLSession
 - MVVM Design Pattern
-- Coffe API: https://developers.arcgis.com/labs/rest/find-places/
+- Coffee API: https://developers.arcgis.com/labs/rest/find-places/
 
 ## Images
 
